@@ -1,0 +1,110 @@
+import { useState } from "react";
+import Footer from "../components/Footer";
+
+function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: ""
+  });
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  async function handleSubmit(e) {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:5000/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Your inquiry has been submitted successfully!");
+
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        message: ""
+      });
+    } else {
+  alert(data.error || "Something went wrong. Please try again.");
+}
+
+  } catch (error) {
+    console.log("Error submitting contact form:", error);
+    alert("Backend is not running or connection failed.");
+  }
+}
+
+  return (
+    <div className="contact-page">
+
+      <h1 className="contact-heading">Contact Us</h1>
+
+      <p className="contact-subtitle">
+        Submit your inquiry and our team will follow up with you.
+      </p>
+
+      <form className="contact-form" onSubmit={handleSubmit}>
+
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+
+        <label>Phone</label>
+        <input
+          type="text"
+          name="phone"
+          placeholder="Enter your phone number"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+
+        <label>Message</label>
+        <textarea
+          name="message"
+          placeholder="Enter your message"
+          value={formData.message}
+          onChange={handleChange}
+        ></textarea>
+
+        <button type="submit" className="primary-btn">
+          Submit Inquiry
+        </button>
+
+      </form>
+
+      <Footer />
+
+    </div>
+  );
+}
+
+export default Contact;
