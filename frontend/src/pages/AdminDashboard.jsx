@@ -6,7 +6,10 @@ function AdminDashboard() {
 
   async function fetchAppointments() {
     try {
-      const response = await fetch("http://localhost:5000/api/appointments");
+      const response = await fetch(
+        "https://clinicflow-s40b.onrender.com/api/appointments"
+      );
+
       const data = await response.json();
 
       if (data.success) {
@@ -19,7 +22,10 @@ function AdminDashboard() {
 
   async function fetchContacts() {
     try {
-      const response = await fetch("http://localhost:5000/api/contact");
+      const response = await fetch(
+        "https://clinicflow-s40b.onrender.com/api/contact"
+      );
+
       const data = await response.json();
 
       if (data.success) {
@@ -33,7 +39,7 @@ function AdminDashboard() {
   async function deleteAppointment(id) {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/appointments/${id}`,
+        `https://clinicflow-s40b.onrender.com/api/appointments/${id}`,
         {
           method: "DELETE"
         }
@@ -55,7 +61,7 @@ function AdminDashboard() {
   async function updateAppointmentStatus(id, status) {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/appointments/${id}/status`,
+        `https://clinicflow-s40b.onrender.com/api/appointments/${id}/status`,
         {
           method: "PUT",
           headers: {
@@ -79,9 +85,12 @@ function AdminDashboard() {
 
   async function deleteContact(id) {
     try {
-      const response = await fetch(`http://localhost:5000/api/contact/${id}`, {
-        method: "DELETE"
-      });
+      const response = await fetch(
+        `https://clinicflow-s40b.onrender.com/api/contact/${id}`,
+        {
+          method: "DELETE"
+        }
+      );
 
       const data = await response.json();
 
@@ -194,6 +203,7 @@ function AdminDashboard() {
                       Delete
                     </button>
                   </td>
+
                 </tr>
               ))}
             </tbody>
@@ -223,6 +233,7 @@ function AdminDashboard() {
                   <td>{contact.phone}</td>
                   <td>{contact.email}</td>
                   <td>{contact.message}</td>
+
                   <td>
                     <button
                       className="danger-btn"
@@ -231,6 +242,7 @@ function AdminDashboard() {
                       Delete
                     </button>
                   </td>
+
                 </tr>
               ))}
             </tbody>
