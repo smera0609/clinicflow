@@ -33,6 +33,12 @@ app.get("/", async (req, res) => {
   }
 });
 
+
+app.get("/test", (req, res) => {
+  res.send("Test route working");
+});
+
+
 app.use("/api/contact", contactRoutes);
 app.use("/api/appointments", appointmentRoutes);
 
