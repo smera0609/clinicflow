@@ -23,7 +23,7 @@ function BookAppointment() {
   e.preventDefault();
 
   try {
-    const response = await fetch("https://clinicflow-s4ob.onrender.com", {
+    const response = await fetch("https://clinicflow-s4ob.onrender.com/api/appointments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
