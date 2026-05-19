@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import BookAppointment from "./pages/BookAppointment";
 import AdminDashboard from "./pages/AdminDashboard";
+import ServiceDetails from "./pages/ServiceDetails";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
         <Route path="/book" element={<BookAppointment />} />
         
         <Route path="/admin" element={<AdminDashboard />} />
+        
+        <Route path="/services/:serviceName" element={<ServiceDetails />} />
 
       </Routes>
 

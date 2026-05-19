@@ -1,14 +1,12 @@
-function ServiceCard(props) {
+function ServiceCard({ title, description, children }) {
   return (
     <div className="service-card">
 
-      <h3>{props.title}</h3>
+      <h3>{title}</h3>
 
-      <p>{props.description}</p>
+      <p>{description}</p>
 
-      <button className="primary-btn">
-        Learn More
-      </button>
+      {children}
 
     </div>
   );
