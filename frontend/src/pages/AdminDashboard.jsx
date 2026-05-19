@@ -7,7 +7,7 @@ function AdminDashboard() {
   async function fetchAppointments() {
     try {
       const response = await fetch(
-        "https://clinicflow-s40b.onrender.com/api/appointments"
+        "https://clinicflow-s4ob.onrender.com/api/appointments"
       );
 
       const data = await response.json();
@@ -23,7 +23,7 @@ function AdminDashboard() {
   async function fetchContacts() {
     try {
       const response = await fetch(
-        "https://clinicflow-s40b.onrender.com/api/contact"
+        "https://clinicflow-s4ob.onrender.com/api/contact"
       );
 
       const data = await response.json();
@@ -39,7 +39,7 @@ function AdminDashboard() {
   async function deleteAppointment(id) {
     try {
       const response = await fetch(
-        `https://clinicflow-s40b.onrender.com/api/appointments/${id}`,
+        `https://clinicflow-s4ob.onrender.com/api/appointments/${id}`,
         {
           method: "DELETE"
         }
@@ -61,7 +61,7 @@ function AdminDashboard() {
   async function updateAppointmentStatus(id, status) {
     try {
       const response = await fetch(
-        `https://clinicflow-s40b.onrender.com/api/appointments/${id}/status`,
+        `https://clinicflow-s4ob.onrender.com/api/appointments/${id}/status`,
         {
           method: "PUT",
           headers: {
@@ -86,7 +86,7 @@ function AdminDashboard() {
   async function deleteContact(id) {
     try {
       const response = await fetch(
-        `https://clinicflow-s40b.onrender.com/api/contact/${id}`,
+        `https://clinicflow-s4ob.onrender.com/api/contact/${id}`,
         {
           method: "DELETE"
         }
