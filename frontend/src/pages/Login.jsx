@@ -9,41 +9,76 @@ function Login() {
     password: ""
   });
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   function handleChange(e) {
     setLoginData({
       ...loginData,
       [e.target.name]: e.target.value
     });
+
+    setError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (
-      loginData.email === "admin@clinicflow.com" &&
-      loginData.password === "admin123"
-    ) {
-      alert("Login successful!");
+    if (!loginData.email || !loginData.password) {
+      setError("Please enter email and password");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "https://clinicflow-s4ob.onrender.com/api/admin/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(loginData)
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("adminEmail", data.admin.email);
+
       navigate("/admin");
-    } else {
-      alert("Invalid login. Use admin@clinicflow.com / admin123");
+    } catch (error) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className="login-page">
-
       <form className="login-form" onSubmit={handleSubmit}>
-
         <h1>Admin Login</h1>
 
-        <p>Login to manage appointments and leads.</p>
+        <p>Login securely to manage appointments and leads.</p>
+
+        {error && (
+          <p style={{ color: "red", fontSize: "14px" }}>
+            {error}
+          </p>
+        )}
 
         <label>Email</label>
         <input
           type="email"
           name="email"
-          placeholder="admin@clinicflow.com"
+          placeholder="Enter admin email"
           value={loginData.email}
           onChange={handleChange}
         />
@@ -52,17 +87,15 @@ function Login() {
         <input
           type="password"
           name="password"
-          placeholder="admin123"
+          placeholder="Enter password"
           value={loginData.password}
           onChange={handleChange}
         />
 
-        <button type="submit" className="primary-btn">
-          Login
+        <button type="submit" className="primary-btn" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
-
       </form>
-
     </div>
   );
 }

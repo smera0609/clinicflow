@@ -1,13 +1,29 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
+  const navigate = useNavigate();
+
   const [appointments, setAppointments] = useState([]);
   const [contacts, setContacts] = useState([]);
+
+  const token = localStorage.getItem("adminToken");
+
+  function handleLogout() {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminEmail");
+    navigate("/login");
+  }
 
   async function fetchAppointments() {
     try {
       const response = await fetch(
-        "https://clinicflow-s4ob.onrender.com/api/appointments"
+        "https://clinicflow-s4ob.onrender.com/api/appointments",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
 
       const data = await response.json();
@@ -23,7 +39,12 @@ function AdminDashboard() {
   async function fetchContacts() {
     try {
       const response = await fetch(
-        "https://clinicflow-s4ob.onrender.com/api/contact"
+        "https://clinicflow-s4ob.onrender.com/api/contact",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
 
       const data = await response.json();
@@ -41,7 +62,10 @@ function AdminDashboard() {
       const response = await fetch(
         `https://clinicflow-s4ob.onrender.com/api/appointments/${id}`,
         {
-          method: "DELETE"
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
@@ -65,7 +89,8 @@ function AdminDashboard() {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({ status })
         }
@@ -88,7 +113,10 @@ function AdminDashboard() {
       const response = await fetch(
         `https://clinicflow-s4ob.onrender.com/api/contact/${id}`,
         {
-          method: "DELETE"
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
@@ -106,15 +134,18 @@ function AdminDashboard() {
   }
 
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     fetchAppointments();
     fetchContacts();
-  }, []);
+  }, [navigate, token]);
 
   return (
     <div className="dashboard">
-
       <aside className="sidebar">
-
         <h2>ClinicFlow</h2>
 
         <ul>
@@ -125,14 +156,15 @@ function AdminDashboard() {
           <li>Analytics</li>
         </ul>
 
+        <button className="danger-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </aside>
 
       <main className="dashboard-content">
-
         <h1>Admin Dashboard</h1>
 
         <div className="dashboard-cards">
-
           <div className="dashboard-card">
             <h3>Total Appointments</h3>
             <p>{appointments.length}</p>
@@ -153,11 +185,9 @@ function AdminDashboard() {
               }
             </p>
           </div>
-
         </div>
 
         <div className="recent-section">
-
           <h2>Recent Appointments</h2>
 
           <table>
@@ -203,16 +233,13 @@ function AdminDashboard() {
                       Delete
                     </button>
                   </td>
-
                 </tr>
               ))}
             </tbody>
           </table>
-
         </div>
 
         <div className="recent-section">
-
           <h2>Recent Leads</h2>
 
           <table>
@@ -242,16 +269,12 @@ function AdminDashboard() {
                       Delete
                     </button>
                   </td>
-
                 </tr>
               ))}
             </tbody>
           </table>
-
         </div>
-
       </main>
-
     </div>
   );
 }
