@@ -748,3 +748,9 @@ th {
     padding: 22px;
   }
 }
+
+.hero-image {
+  width: 100%;
+  max-width: 500px;
+  object-fit: contain;
+}

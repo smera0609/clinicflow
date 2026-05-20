@@ -38,26 +38,11 @@ function Home() {
 
         <div className="hero-right">
 
-          <div className="hero-card">
-
-            <h3>Today's Summary</h3>
-
-            <div className="summary-item">
-              <span>Appointments</span>
-              <strong>18</strong>
-            </div>
-
-            <div className="summary-item">
-              <span>New Leads</span>
-              <strong>7</strong>
-            </div>
-
-            <div className="summary-item">
-              <span>Follow-ups</span>
-              <strong>5</strong>
-            </div>
-
-          </div>
+          <img
+            src="https://illustrations.popsy.co/purple/doctor.svg"
+            alt="Online appointment management illustration"
+            className="hero-image"
+          />
 
         </div>
 
@@ -95,7 +80,7 @@ function Home() {
 
       </section>
 
-     <section className="py-20 px-6 md:px-12 lg:px-20 bg-[#f8f3ff] text-center">
+      <section className="py-20 px-6 md:px-12 lg:px-20 bg-[#f8f3ff] text-center">
 
         <h2 className="text-4xl font-bold text-[#241333] mb-6">
           Built for Real Business Growth
