@@ -6,15 +6,32 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const { name, phone, email, service, date, time } = req.body;
+
     if (!name || !phone || !service || !date || !time) {
-  return res.status(400).json({
-    success: false,
-    error: "Name, phone, service, date, and time are required"
-  });
-}
+      return res.status(400).json({
+        success: false,
+        error: "Name, phone, service, date, and time are required"
+      });
+    }
+
+    const existingAppointment = await pool.query(
+      `SELECT * FROM appointments
+       WHERE service = $1
+       AND appointment_date = $2
+       AND appointment_time = $3
+       AND status != 'Cancelled'`,
+      [service, date, time]
+    );
+
+    if (existingAppointment.rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        error: "This appointment slot is already booked. Please choose another time."
+      });
+    }
 
     const query = `
-      INSERT INTO appointments 
+      INSERT INTO appointments
       (name, phone, email, service, appointment_date, appointment_time)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
@@ -39,7 +56,6 @@ router.post("/", async (req, res) => {
     });
   }
 });
-
 
 router.get("/", async (req, res) => {
   try {
