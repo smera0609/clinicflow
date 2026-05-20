@@ -39,10 +39,10 @@ function Home() {
         <div className="hero-right">
 
           <img
-            src="https://cdn-icons-png.flaticon.com/512/2966/2966480.png"
-            alt="Clinic illustration"
-            className="hero-image"
-          />
+  src="https://img.freepik.com/free-vector/online-doctor-concept-illustration_114360-1783.jpg"
+  alt="Healthcare Illustration"
+  className="hero-image"
+/>
 
         </div>
 
