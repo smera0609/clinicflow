@@ -10,6 +10,7 @@ function BookAppointment() {
     date: "",
     time: ""
   });
+  const today = new Date().toISOString().split("T")[0];
 
   function handleChange(e) {
     setAppointmentData({
@@ -130,6 +131,7 @@ function BookAppointment() {
           name="date"
           value={appointmentData.date}
           onChange={handleChange}
+          min={today}
           required
         />
 
