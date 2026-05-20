@@ -39,8 +39,8 @@ function Home() {
         <div className="hero-right">
 
           <img
-            src="https://illustrations.popsy.co/purple/doctor.svg"
-            alt="Online appointment management illustration"
+            src="https://cdn-icons-png.flaticon.com/512/2966/2966480.png"
+            alt="Clinic illustration"
             className="hero-image"
           />
 
