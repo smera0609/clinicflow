@@ -17,42 +17,54 @@ function Contact() {
   }
 
   async function handleSubmit(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("https://clinicflow-s4ob.onrender.com/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
+    const phoneRegex = /^[0-9]{10}$/;
 
-    const data = await response.json();
+    if (!phoneRegex.test(formData.phone)) {
+      alert("Phone number must contain exactly 10 digits.");
+      return;
+    }
 
-    if (data.success) {
-      alert("Your inquiry has been submitted successfully!");
+    try {
+      const response = await fetch(
+        "https://clinicflow-s4ob.onrender.com/api/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }
+      );
 
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        message: ""
-      });
-    } else {
-  alert(data.error || "Something went wrong. Please try again.");
-}
+      const data = await response.json();
 
-  } catch (error) {
-    console.log("Error submitting contact form:", error);
-    alert("Backend is not running or connection failed.");
+      if (data.success) {
+        alert("Your inquiry has been submitted successfully!");
+
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          message: ""
+        });
+      } else {
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+
+    } catch (error) {
+      console.log("Error submitting contact form:", error);
+      alert("Backend is not running or connection failed.");
+    }
   }
-}
 
   return (
     <div className="contact-page">
 
-      <h1 className="contact-heading">Contact Us</h1>
+      <h1 className="contact-heading">
+        Contact Us
+      </h1>
 
       <p className="contact-subtitle">
         Submit your inquiry and our team will follow up with you.
@@ -61,38 +73,47 @@ function Contact() {
       <form className="contact-form" onSubmit={handleSubmit}>
 
         <label>Name</label>
+
         <input
           type="text"
           name="name"
           placeholder="Enter your name"
           value={formData.name}
           onChange={handleChange}
+          required
         />
 
         <label>Phone</label>
+
         <input
-          type="text"
+          type="tel"
           name="phone"
-          placeholder="Enter your phone number"
+          placeholder="Enter 10-digit phone number"
           value={formData.phone}
           onChange={handleChange}
+          maxLength="10"
+          required
         />
 
         <label>Email</label>
+
         <input
           type="email"
           name="email"
           placeholder="Enter your email"
           value={formData.email}
           onChange={handleChange}
+          required
         />
 
         <label>Message</label>
+
         <textarea
           name="message"
           placeholder="Enter your message"
           value={formData.message}
           onChange={handleChange}
+          required
         ></textarea>
 
         <button type="submit" className="primary-btn">

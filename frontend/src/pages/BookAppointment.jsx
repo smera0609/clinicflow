@@ -2,7 +2,6 @@ import { useState } from "react";
 import Footer from "../components/Footer";
 
 function BookAppointment() {
-
   const [appointmentData, setAppointmentData] = useState({
     name: "",
     phone: "",
@@ -20,39 +19,48 @@ function BookAppointment() {
   }
 
   async function handleSubmit(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("https://clinicflow-s4ob.onrender.com/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(appointmentData)
-    });
+    const phoneRegex = /^[0-9]{10}$/;
 
-    const data = await response.json();
+    if (!phoneRegex.test(appointmentData.phone)) {
+      alert("Phone number must contain exactly 10 digits.");
+      return;
+    }
 
-    if (data.success) {
-      alert("Appointment booked successfully!");
+    try {
+      const response = await fetch(
+        "https://clinicflow-s4ob.onrender.com/api/appointments",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(appointmentData)
+        }
+      );
 
-      setAppointmentData({
-        name: "",
-        phone: "",
-        email: "",
-        service: "",
-        date: "",
-        time: ""
-      });
-    } else {
-  alert(data.error || "Something went wrong. Please try again.");
-}
+      const data = await response.json();
 
-  } catch (error) {
-    console.log("Error booking appointment:", error);
-    alert("Backend is not running or connection failed.");
+      if (data.success) {
+        alert("Appointment booked successfully!");
+
+        setAppointmentData({
+          name: "",
+          phone: "",
+          email: "",
+          service: "",
+          date: "",
+          time: ""
+        });
+      } else {
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.log("Error booking appointment:", error);
+      alert("Backend is not running or connection failed.");
+    }
   }
-}
 
   return (
     <div className="booking-page">
@@ -75,16 +83,19 @@ function BookAppointment() {
           placeholder="Enter your name"
           value={appointmentData.name}
           onChange={handleChange}
+          required
         />
 
         <label>Phone Number</label>
 
         <input
-          type="text"
+          type="tel"
           name="phone"
-          placeholder="Enter phone number"
+          placeholder="Enter 10-digit phone number"
           value={appointmentData.phone}
           onChange={handleChange}
+          maxLength="10"
+          required
         />
 
         <label>Email</label>
@@ -103,17 +114,13 @@ function BookAppointment() {
           name="service"
           value={appointmentData.service}
           onChange={handleChange}
+          required
         >
           <option value="">Choose Service</option>
-
           <option>General Consultation</option>
-
           <option>Dental Checkup</option>
-
           <option>Career Counseling</option>
-
           <option>Physiotherapy</option>
-
         </select>
 
         <label>Select Date</label>
@@ -123,6 +130,7 @@ function BookAppointment() {
           name="date"
           value={appointmentData.date}
           onChange={handleChange}
+          required
         />
 
         <label>Select Time</label>
@@ -132,6 +140,7 @@ function BookAppointment() {
           name="time"
           value={appointmentData.time}
           onChange={handleChange}
+          required
         />
 
         <button type="submit" className="primary-btn">
